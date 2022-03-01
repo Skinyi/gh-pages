@@ -132,12 +132,12 @@ git 全局配置，如果需要通过 git 将博客部署到 Github Pages 上，
 
 ### 下载主题文件
 
-我没有按照官方使用 git clone 同步的方法来下载主题，直接通过下载仓库源码的方式下载下来。skinyi.github.io 是我的整个博客项目的主目录。
+我没有按照官方使用 git clone 同步的方法来下载主题，直接通过下载仓库源码的方式下载下来。gh-pages 是我的整个博客项目的主目录。
 
 ```bash
-[skinyi@localhost skinyi.github.io]$ wget -c https://github.com/fengkx/hexo-theme-purer/archive/refs/heads/master.zip -O themes/
-[skinyi@localhost skinyi.github.io]$ unzip themes/master.zip
-[skinyi@localhost skinyi.github.io]$ mv themes/hexo-theme-purer-master themes/purer
+[skinyi@localhost gh-pages]$ wget -c https://github.com/fengkx/hexo-theme-purer/archive/refs/heads/master.zip -O themes/
+[skinyi@localhost gh-pages]$ unzip themes/master.zip
+[skinyi@localhost gh-pages]$ mv themes/hexo-theme-purer-master themes/purer
 ```
 
 文档中为了避免由于主题更新而导致原有的主题目录下的 `_config.yml` 文件失效故而选择把主题的 `_config.yml` 放在主题外面并取名为 `_config.theme.yml`，在进行编译时将此文件的内容写进主题底下的 `_config.yml`。虽然我之后不会更新这个主题但是我还是按照文档里的做了，只不过我起的名字为 `_config.purer.yml`。
@@ -145,8 +145,8 @@ git 全局配置，如果需要通过 git 将博客部署到 Github Pages 上，
 将 purer 主题下的 `_config.example.yml` 复制到项目主目录下。然后编辑 package.json 的内容如下：
 
 ```bash
-[skinyi@localhost skinyi.github.io]$ cp themes/purer/_config.example.yml _config.purer.yml
-[skinyi@localhost skinyi.github.io]$ code package.json
+[skinyi@localhost gh-pages]$ cp themes/purer/_config.example.yml _config.purer.yml
+[skinyi@localhost gh-pages]$ code package.json
 ```
 
 {% codeblock lang:json package.json %}
@@ -168,21 +168,21 @@ git 全局配置，如果需要通过 git 将博客部署到 Github Pages 上，
 首先可选的工作是卸载不需要或不推荐的渲染器：
 
 ```bash
-[skinyi@localhost skinyi.github.io]$ npm uninstall hexo-renderer-stylus
-[skinyi@localhost skinyi.github.io]$ npm uninstall hexo-renderer-marked
+[skinyi@localhost gh-pages]$ npm uninstall hexo-renderer-stylus
+[skinyi@localhost gh-pages]$ npm uninstall hexo-renderer-marked
 ```
 
 安装 markdown-it 渲染器以及其他常用插件：
 
 ```bash
 # markdown-it 渲染器
-[skinyi@localhost skinyi.github.io]$ npm i -S hexo-renderer-markdown-it
+[skinyi@localhost gh-pages]$ npm i -S hexo-renderer-markdown-it
 # 支持从post_assert_folder 用 markdown 引入图片
-[skinyi@localhost skinyi.github.io]$ npm i -S hexo-asset-image
+[skinyi@localhost gh-pages]$ npm i -S hexo-asset-image
 # 支持 emoji
-[skinyi@localhost skinyi.github.io]$ npm i -S markdown-it-emoji
+[skinyi@localhost gh-pages]$ npm i -S markdown-it-emoji
 # 支持数学公式
-[skinyi@localhost skinyi.github.io]$ npm i -S @iktakahiro/markdown-it-katex
+[skinyi@localhost gh-pages]$ npm i -S @iktakahiro/markdown-it-katex
 ```
 
 由于 `hexo-renderer-markdown-it` 默认不生成 h1 的锚点，所以我们需要在站点配置文件添加如下设置，在插件对象里将刚才添加的两个插件加进去:
@@ -212,7 +212,7 @@ markdown:
 我的项目没有要友链页，故最终目录结构如下：
 
 ```bash
-[skinyi@localhost skinyi.github.io]$ tree -L 2 source
+[skinyi@localhost gh-pages]$ tree -L 2 source
 source
 ├── about
 │   └── index.md
@@ -264,7 +264,7 @@ date: 2022-02-22 20:55:00
 使用 git 的方式进行博客部署可以安装 hexo 插件 *hexo-deployer-git*：
 
 ```bash
-[skinyi@localhost skinyi.github.io]$ npm install hexo-deployer-git --save
+[skinyi@localhost gh-pages]$ npm install hexo-deployer-git --save
 ```
 
 在 *_config.yml* 中修改配置：
@@ -281,7 +281,7 @@ deploy:
 生成站点文件并推送至远程仓库：
 
 ```bash
-[skinyi@localhost skinyi.github.io]$ hexo clean && hexo deploy
+[skinyi@localhost gh-pages]$ hexo clean && hexo deploy
 ```
 
 > 通过 Git 方式提交时建议在本地生成公私钥对并将生成的公钥文件添加到远程仓库的公钥列表里，然后每次提交时就可以通过验证公私密钥对的方式而不用每次都输用户名及密码。
