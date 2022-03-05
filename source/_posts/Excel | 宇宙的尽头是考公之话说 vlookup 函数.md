@@ -1,5 +1,5 @@
 ---
-title: Excel | 宇宙的尽头是考公之话说 vlookup 函数
+title: 宇宙的尽头是考公之话说 vlookup 函数
 lang: zh-CN
 tags: 
   - Excel
