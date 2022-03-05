@@ -4,6 +4,7 @@ lang: zh-CN
 tags: 
   - Linux
   - RHEL
+  - RHCE
   - 认证考试
 categories: 
   - [学习, Linux]
