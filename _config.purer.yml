@@ -71,7 +71,7 @@ postCount:
 search: true # enable local search
 toc: true
 fancybox: true
-license: 'This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License'
+license: '这篇文章由作者胡编乱造或者由其他文章复制粘贴而来，其中有些内容可能已经过时，请谨慎参考复制文章中的内容。'
 footer:
   custom: '❤ Powered by <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a> with <a href="https://github.com/fengkx/hexo-theme-purer" target="_blank" rel="noopener noreferrer">Purer theme</a> by fengkx.'
 
