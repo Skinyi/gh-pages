@@ -2,6 +2,7 @@
 title: 云计算与阿里云 ACP 概述
 lang: zh-CN
 tags: 
+  - ACP
   - 云计算
   - 阿里云
   - 认证考试
