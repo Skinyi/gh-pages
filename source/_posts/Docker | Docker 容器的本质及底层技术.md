@@ -1,5 +1,5 @@
 ---
-title: Docker 虚拟化技术的本质基底层技术
+title: Docker 容器的本质及底层技术
 lang: zh-CN
 tags: 
   - Docker
@@ -101,7 +101,7 @@ root@localhost:\# pwd
 /
 ```
 
-此时无法执行 `ps -ef` 命令，因为其内存文件系统还没有挂载。可以到此为止了。
+此时无法执行 `ps -ef` 命令，因为其内存文件系统还没有挂载。但我们的实验可以到此为止。
 
 ## Linux 命名空间技术
 
@@ -110,7 +110,7 @@ root@localhost:\# pwd
 * Mount Namespace       提供磁盘挂载点和文件系统的隔离能力
 * IPC Namespace         提供进程间通信隔离的能力
 * Network Namespace     提供网络隔离能力
-* UTS Namespace         提供主机名隔离能力
+* UTS Namespace         提供主机名及主机域的隔离能力
 * PID Namespace         提供进程隔离能力
 * User Namespace        提供用户隔离能力
 
@@ -155,7 +155,7 @@ lrwxrwxrwx. 1 root root 0  3月 21 13:42 user -> 'user:[4026531837]'
 lrwxrwxrwx. 1 root root 0  3月 21 13:42 uts -> 'uts:[4026531838]'
 ```
 
-可以发现主机的 `bash` 进程和 `systemd` 进程完全一致，但容器中的进程和主机进程中的存在部分差别。
+可以发现主机的 `bash` 进程和 `systemd` 进程完全一致，但容器中的进程和主机进程中的存在部分差别。命名空间中还包含 cgroup 命名空间，这涉及到 Linux 管理硬件资源分配的一种技术。
 
 ## CGroup 控制组
 
@@ -173,4 +173,4 @@ CGroup 是 Linux 内核提供的一种可以限制、记录、隔离进程组所
 
 Containerd 是一个强大的工业级容器运行时环境，其脱胎于 docker 的 libcontainerd 后经开源独立以及不断完善从 RunC 发展到现在的 Containerd（谷歌及其他大厂的一系列操作下）。现在谷歌的 K8S 默认集成的容器运行时环境已经是 Containerd，而不是原本的 Docker，Docker 现在更多代表的其实是操纵 Containerd 的一个客户端。
 
-[!Containerd 的云原生架构](images/Containerd-整体架构.bmp)
+![Containerd 的云原生架构](images/docker/Containerd-整体架构.bmp)
