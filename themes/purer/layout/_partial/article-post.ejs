@@ -11,7 +11,9 @@
         <%- partial('post/date', {className: 'article-date', dateFormat: 'MMM D'}) %>
         <%- partial('post/category') %>
         <%- partial('post/tag') %>
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="<%- url_for(post.path) %>#comments" class="article-comment-link"><%= __('article.comments') %></a></span>
+        <% if (theme.profile.comments){ %>
+            <span class="post-comment"><i class="icon icon-comment"></i> <a href="<%- url_for(post.path) %>#comments" class="article-comment-link"><%= __('article.comments') %></a></span>
+        <% } %>
         <%- partial('post/wordcount') %>
     </p>
 
