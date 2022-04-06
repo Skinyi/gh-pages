@@ -58,13 +58,14 @@ prismjs:
   line_number: true
   tab_replace: ''
 markdown:
-  html: true
-  xhtmlOut: true
-  breaks: true
-  langPrefix:
-  linkify: true
-  typographer:
-  quotes: “”‘’
+  render:
+    html: true
+    xhtmlOut: true
+    breaks: true
+    langPrefix: 'language-'
+    linkify: true
+    typographer:
+    quotes: “”‘’
   anchors:
     level: 1
     permalink: false
