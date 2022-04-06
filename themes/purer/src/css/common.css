@@ -18,6 +18,7 @@ body {
 }
 footer {
   @apply pb-2;
+  width: 12.5%;
 }
 
 .footer-social-links {
@@ -28,7 +29,7 @@ footer {
 }
 .footer-custom,
 .theme-brand {
-  @apply px-6 text-gray-700 font-light;
+  @apply px-2 text-gray-700 font-light;
   font-size: 13px;
 }
 .social-links {
@@ -62,11 +63,14 @@ footer {
     @apply text-left;
 
     > a {
-      @apply my-1 mx-2 px-4 py-2;
+      @apply my-1 mx-2 pl-10 py-2;
     }
   }
   .menu-title {
     @apply inline;
+  }
+  footer{
+    width: 12.5% !important;
   }
 }
 
@@ -171,14 +175,16 @@ footer {
 
 @screen lg {
   .aside-fixture {
-    @apply w-1/5;
+    /* @apply w-1/4; */
+    width: 23.5%;
   }
   .header-fixture {
-    @apply w-1/6;
+    /*@apply w-1/6;*/
+    width: 12.5%;
   }
   .main-section {
-    margin-left: 16.667%;
-    max-width: 62.333%;
+    margin-left: 12.5%;
+    max-width: 64%;
   }
 }
 
@@ -380,6 +386,7 @@ footer {
     tr:nth-child(even) {
       @apply bg-gray-200;
     }
+    margin-bottom: 1rem;
   }
 }
 
@@ -487,8 +494,12 @@ pre {
 }
 
 .highlight figcaption {
+  position: absolute;
+  margin-top: -1.3rem;
+  right: 0.5rem;
+  max-width: 85%;
   font-size: 0.85em;
-  color: #8e908c;
+  color: #4B5563;
   line-height: 1em;
   margin-bottom: 1em;
 }
@@ -597,6 +608,11 @@ main {
   .content {
     @apply pb-8 mb-1;
   }
+}
+
+thead {
+  background-color: #9ca3af;
+  color:white;
 }
 
 /* purgecss end ignore */

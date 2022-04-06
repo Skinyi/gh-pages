@@ -116,7 +116,8 @@ categories:
 #!/bin/sh
 dev_name="sdb1"
 dev_path="/dev/$dev_name"
-if [ -b "$dev_path" -a -r "$dev_path" -a -w "$dev_path" ]; then
+mnt_path="/mnt/data"
+if [ -b "$dev_path" -a -r "$mnt_path" -a -w "$mnt_path" ]; then
   echo "磁盘 $dev_path 已挂载且当前用户可读写！"
 else
   echo "磁盘未挂载或对当前用户不可读或不可写！"
@@ -151,10 +152,57 @@ else
 fi
 ```
 
+与其他编程语言类似，条件判断语句中可以使用 break 关键字进行跳出。
+
 #### 案例：编写脚本监测可用剩余内存并发邮件报警
 
-要求将脚本加入 crontab 任务，定时每 30 分钟执行一次。脚本内容：
+要求：
+
+1. 当内存可用大小小于 100m 时发邮件进行报警；
+
+2. 将脚本加入 crontab 任务，定时每 30 分钟执行一次。
 
 ```bash
+#!/bin/sh
+mem_free=`free -m|awk 'NR==2 {print $NF}'`
+if test $mem_free -lt '100'; then
+  local msg="当前可用内存为 ${mem_free}m，已不足 100m！"
+  echo msg | mail -s '服务器内存告警' user@mailsrv.com
+fi
+```
+
+执行 `crontab -e`，写入定时任务：
+
+```crontab
+* /30 * * * * /bin/bash /path/to/scripts/check_mem.sh
+```
+
+### case in 判断语句
+
+Case in 语句一般用于多分支且判断条件较简单的分支语句结构。Case in 语句的一般格式是：
+
+```bash
+case 表达式 in
+  匹配模式1)
+    匹配模式1成立时执行的语句
+  ;;
+  匹配模式2)
+    匹配模式2成立时执行的语句
+  ;;
+  匹配模式n)
+    匹配模式n成立时执行的语句
+  ;;
+  *)
+    其他匹配模式都不成立时执行的语句
+esac
+```
+
+其中，表达式既可以是一个变量、一个数字、一个字符串，还可以是一个数学计算表达式，或者是命令的执行结果，只要能够得到表达式的值就可以；匹配模式可以是一个数字、一个字符串，甚至是一个简单的正则表达式；`;;` 的作用相当于其他编程语言的 case 语句中的 break；`*)` 的作用相当于其他编程语言的 case 语句中的 default。
+
+#### 案例：模拟实现服务启停、重启、查询的管理脚本
+
+```bash
+#!/bin/sh
 
 ```
+
