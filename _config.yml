@@ -123,6 +123,6 @@ deploy:
   - type: git
     repo: 
       #gitee: git@gitee.com:skinyi/skinyi.git
-      github: https://github.com/Skinyi/skinyi.github.io
+      github: git@github.com:Skinyi/skinyi.github.io.git
     branch: master
     message: '更新了文章内容'

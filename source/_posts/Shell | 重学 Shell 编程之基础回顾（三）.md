@@ -223,6 +223,73 @@ esac
 exit 0
 {% endcodeblock %}
 
+## Shell 循环语句结构
+
+### for 循环
+
+```bash
+# list 是一个列表，可以是数字或字符串序列，元素之间用空格隔开
+for $variable in {list} # 或 {start..end..step}，如 {1..100..2}表示从1都100，每次自增 2 
+do 
+  do_something...
+done
+```
+
+类似 C 语言：
+
+```bash
+for (( expression1;expression2;expression3 ))
+do
+  do_something...
+done
+```
+
+例子：
+
+```bash
+# 循环列表
+for i in 1 2 3 4 5 6 7 8
+do
+  echo $i
+done
+# 循环序列，自定义步长
+for i in {1..10..2}
+do
+  echo $i
+done
+# 类似 C 语言
+for (( i=1;i<10;++i ))
+do
+  echo $i
+done
+# 遍历数组
+array=(1 2 3 4 5) # 定义数组
+for i in ${array[*]}
+do
+  echo $i
+done
+```
+
+### while 循环
+
+```bash
+while [表达式]
+do
+  do_something...
+done
+```
+
+### until 循环
+
+```bash
+until [表达式]
+do
+  do_something...
+done
+```
+
+循环结构也可以使用 break,continue 关键字进行逻辑控制。
+
 ## 函数
 
 基本格式：
