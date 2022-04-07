@@ -112,7 +112,7 @@ categories:
 
 ### 案例：判断磁盘是否挂载且挂载点对当前用户是否可读可写
 
-```bash
+{% codeblock lang:bash check_disk.sh %}
 #!/bin/sh
 dev_name="sdb1"
 dev_path="/dev/$dev_name"
@@ -122,7 +122,7 @@ if [ -b "$dev_path" -a -r "$mnt_path" -a -w "$mnt_path" ]; then
 else
   echo "磁盘未挂载或对当前用户不可读或不可写！"
 fi
-```
+{% endcodeblock %}
 
 ## Shell 分支语句结构
 
@@ -162,14 +162,14 @@ fi
 
 2. 将脚本加入 crontab 任务，定时每 30 分钟执行一次。
 
-```bash
+{% codeblock lang:bash check_mem.sh %}
 #!/bin/sh
 mem_free=`free -m|awk 'NR==2 {print $NF}'`
 if test $mem_free -lt '100'; then
   local msg="当前可用内存为 ${mem_free}m，已不足 100m！"
   echo msg | mail -s '服务器内存告警' user@mailsrv.com
 fi
-```
+{% endcodeblock %}
 
 执行 `crontab -e`，写入定时任务：
 
@@ -201,8 +201,72 @@ esac
 
 #### 案例：模拟实现服务启停、重启、查询的管理脚本
 
-```bash
+{% codeblock lang:bash service.sh %}
 #!/bin/sh
+case $1 in
+  start)
+    echo "服务启动成功！"
+  ;;
+  stop)
+    echo "服务停止成功！"
+  ;;
+  restart)
+    echo "重启服务成功！"
+  ;;
+  status)
+    echo "呃。。。。。。"
+  ;;
+  *)
+    echo "Usage: $0 {start|stop|restart|status}"
+    exit 1
+esac
+exit 0
+{% endcodeblock %}
 
+## 函数
+
+基本格式：
+
+```bash
+# 定义函数，function、return 关键字可省略 
+## 标准写法
+function func_name(){
+  do_something...
+  return ret_val
+}
+## 省略花括号
+function func_name(
+  do_something...
+  return ret_val
+)
+## 一般写法
+func_name(){
+  do_something...
+  retuen ret_val
+}
+# 调用函数，其中 arg1 arg2 ... argN 都是参数
+func_name arg1 arg2 ... argN
+# 必须先定义再调用
 ```
 
+在日常工作中，一把将 shell 的函数定义和函数调用分布在两个脚本文件中，此行为有点类似 C 语言编程中设置头文件的行为，其初衷是模块化编程。
+
+{% codeblock lang:bash def_func.sh %}
+function my_func(){
+  echo "单独定义的函数。"
+  return 0
+}
+{% endcodeblock %}
+
+调用独立定义的函数：
+
+{% codeblock lang:bash exec_func.sh %}
+#!/bin/sh
+func_path="/path/to/def_func.sh"
+# 判断函数文件是否存在
+[ -f func_path ] && . func_path || {echo "找不到文件：$func_path" 2>&1; exit 1}
+# 调用函数
+my_func
+{% endcodeblock %}
+
+函数内部也有一些特殊变量，可进行传递的参数等的处理，可参考调用 shell 脚本时内部的特殊变量，脚本的特殊变量不会被函数内部自动继承，需要层层传递。

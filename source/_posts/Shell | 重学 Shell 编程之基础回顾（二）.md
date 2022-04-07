@@ -109,7 +109,7 @@ bash: 未预期的符号“(”附近有语法错误
 
 以下示例展示了一个简单的网站服务存活检测的脚本，其原理是对网站定时发送 head 请求以确认网站服务可用，当请求失败次数达到一定次数后给当前系统用户发送邮件告知网站服务出了问题并退出脚本的执行。要想再严格些可以考虑认为一定周期内达到最大失败次数才认为网站挂了，还有在脚本传参时可以进行 url 格式的正则检查，当然这里只是个小案例，主要还是将之前学到的没学到的东西都用了一遍，加深记忆。
 
-```bash
+{% codeblock lang:bash check_website_status.sh %}
 #!/bin/sh
 ## Check web service status
 
@@ -121,7 +121,7 @@ req_wait_time='1'     # 每次请求间隔时间
 
 check_parameters(){
   if [ $# -ne 1 ]; then 
-    printf "错误：未指定或指定了多个参数！\n用法：./check_website_status.sh <url>\n" 2>&1
+    printf "错误：未指定或指定了多个参数！\n用法：$0 <url>\n" 2>&1
     exit 1
   else
     req_url=$1
@@ -156,7 +156,7 @@ check_status(){
 
 check_parameters $@     # 函数不会继承 shell 脚本的参数，调用时需进行传参
 check_status
-```
+{% endcodeblock %}
 
 ### expr 命令
 
@@ -220,7 +220,7 @@ check_status
 [skinyi@fedora ~]$ expr 2 \* 3
 6
 [skinyi@fedora ~]$ expr 2 * 3
-expr: 语法错误：未预期的参数 “check_website_status.sh”
+expr: 语法错误：未预期的参数
 [skinyi@fedora ~]$ expr 2 \+ 5
 7
 # expr match 模式匹配，输出匹配字符个数
@@ -245,15 +245,15 @@ expr: 语法错误：未预期的参数 “check_website_status.sh”
 
 #### 案例：参数传入一个文件的名字，判断其是否是 mp3 文件
 
-```bash
+{% codeblock lang:bash check_mp3.sh %}
 #!/bin/sh
 # && 分隔的两条语句前面的执行成功（退出码为 0）后才执行后面的语句，||反之
 expr "$1" ":" ".*\.mp3\$" 2>>/dev/null && echo "这是个 mp3 文件" || echo "这不是 mp3 文件"
-```
+{% endcodeblock %}
 
 #### 案例：参数传入一句话（拼音或单词），判断其长度大于 3 的拼音、单词个数
 
-```bash
+{% codeblock lang:bash count_more_than_3.sh %}
 #!/bin/sh
 str_count=0
 for word in $@; do
@@ -262,7 +262,7 @@ for word in $@; do
   fi
 done
 echo "大于 3 的拼音/单词个数为：$str_count"
-```
+{% endcodeblock %}
 
 ### bc 命令
 
