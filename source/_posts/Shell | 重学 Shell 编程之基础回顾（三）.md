@@ -337,3 +337,85 @@ my_func
 {% endcodeblock %}
 
 函数内部也有一些特殊变量，可进行传递的参数等的处理，可参考调用 shell 脚本时内部的特殊变量，脚本的特殊变量不会被函数内部自动继承，需要层层传递。
+
+## 调试 shell 脚本
+
+### 利用 bash -x 显示脚本执行过程
+
+```bash
+[skinyi@fedora ~]$ bash -x check_website_status.sh baidu.com
++ req_url=
++ req_timeout=5
++ req_fails=0
++ req_alert_fails=10
++ req_wait_time=1
++ check_parameters baidu.com
++ '[' 1 -ne 1 ']'
++ req_url=baidu.com
++ check_status
++ true
++ curl --head --connect-timeout 5 -s -f baidu.com -o /dev/null
++ '[' 0 -ne 0 ']'
+++ date --rfc-3339=seconds
++ local 'date=2022-04-07 13:43:55+08:00'
++ echo '2022-04-07 13:43:55 时进行了一次成功的请求'
+2022-04-07 13:43:55 时进行了一次成功的请求
++ sleep 1
++ true
++ curl --head --connect-timeout 5 -s -f baidu.com -o /dev/null
++ '[' 0 -ne 0 ']'
+++ date --rfc-3339=seconds
++ local 'date=2022-04-07 13:43:56+08:00'
++ echo '2022-04-07 13:43:56 时进行了一次成功的请求'
+2022-04-07 13:43:56 时进行了一次成功的请求
+```
+
+### 使用 set -x 和 set +x 包围要调试的代码块
+
+```bash
+[skinyi@fedora ~]$ cat more_than_3.sh 
+#!/bin/sh
+str_count=0
+for word in $@;do
+  set -x
+  if [ `expr length $word` -gt 3 ]; then
+    let str_count+=1
+  fi
+  set +x
+done
+echo "大于 3 的拼音/单词个数为：$str_count"
+```
+
+执行脚本：
+
+```bash
+[skinyi@fedora ~]$ ./more_than_3.sh ni bu shi zhen zheng de kuai le
+++ expr length ni
++ '[' 2 -gt 3 ']'
++ set +x
+++ expr length bu
++ '[' 2 -gt 3 ']'
++ set +x
+++ expr length shi
++ '[' 3 -gt 3 ']'
++ set +x
+++ expr length zhen
++ '[' 4 -gt 3 ']'
++ let str_count+=1
++ set +x
+++ expr length zheng
++ '[' 5 -gt 3 ']'
++ let str_count+=1
++ set +x
+++ expr length de
++ '[' 2 -gt 3 ']'
++ set +x
+++ expr length kuai
++ '[' 4 -gt 3 ']'
++ let str_count+=1
++ set +x
+++ expr length le
++ '[' 2 -gt 3 ']'
++ set +x
+大于 3 的拼音/单词个数为：3
+```
