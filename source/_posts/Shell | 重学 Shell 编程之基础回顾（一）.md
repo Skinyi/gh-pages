@@ -131,7 +131,7 @@ Shell 语言是弱类型语言，如其他编程语言，其也有变量的概�
 | \$\_      | 获取上次执行命令的最后一个参数。                             |
 
 ```bash
-[skinyi@fedora ~]\$ cat test.sh
+[skinyi@fedora ~]$ cat test.sh
 #!/bin/sh
 echo '使用"$*"打印参数：'
 for var in "$*"
@@ -144,7 +144,7 @@ do
         echo "$var"
 done
 
-[skinyi@fedora ~]\$ bash test.sh a b c d
+[skinyi@fedora ~]$ bash test.sh a b c d
 使用"$*"打印参数：
 a b c d
 使用"$@"打印参数：
@@ -166,14 +166,14 @@ d
 案例：判断传入参数个数。
 
 ```bash
-[skinyi@fedora ~]\$ cat test.sh
+[skinyi@fedora ~]$ cat test.sh
 #!/bin/sh
 [ "$#" -ne "2" ] && {
         echo "Expect 2 args!"
         exit 112
 }
 
-[skinyi@fedora ~]\$ bash test.sh 1
+[skinyi@fedora ~]$ bash test.sh 1
 Expect 2 args!
 ```
 
@@ -216,10 +216,10 @@ Expect 2 args!
 
 ```bash
 # 例子
-[skinyi@fedora ~]\$ set 11 22 33 44 # 通过 set 命令设置 $1, $2, $3, $4
-[skinyi@fedora ~]\$ echo $4         # 输出 $4 的值，即 44
-[skinyi@fedora ~]\$ echo '$'$#      # 此时会输出 $4 而非 $4 的值
-[skinyi@fedora ~]\$ eval echo '$'$# # 此时会输出 $4 的值 44
+[skinyi@fedora ~]$ set 11 22 33 44 # 通过 set 命令设置 $1, $2, $3, $4
+[skinyi@fedora ~]$ echo $4         # 输出 $4 的值，即 44
+[skinyi@fedora ~]$ echo '$'$#      # 此时会输出 $4 而非 $4 的值
+[skinyi@fedora ~]$ eval echo '$'$# # 此时会输出 $4 的值 44
 ```
 
 原理：eval 会把参数进行扫描拼接再执行，即上述例子最后一条命令会先扫描得到 `echo $4`，然后再去执行。
@@ -229,10 +229,10 @@ Expect 2 args!
 exec 会在当前进程中直接执行后面的命令而不会创建子进程，因此当执行的命令退出后该进程也会被销毁，即效果是原本的 bash 进程“不见了”。
 
 ```bash
-[skinyi@fedora ~]\$ sudo su -
+[skinyi@fedora ~]$ sudo su -
 [root@fedora ~]\# exec whoami
 root
-[skinyi@fedora ~]\$ 
+[skinyi@fedora ~]$ 
 ```
 
 ## Shell 子串
@@ -257,24 +257,24 @@ root
 子串处理示例：
 
 ```bash
-[skinyi@fedora ~]\$ var="abcdefghi"
-[skinyi@fedora ~]\$ echo ${var}
+[skinyi@fedora ~]$ var="abcdefghi"
+[skinyi@fedora ~]$ echo ${var}
 abcdefghi
-[skinyi@fedora ~]\$ echo ${#var}
+[skinyi@fedora ~]$ echo ${#var}
 9
-[skinyi@fedora ~]\$ echo ${var:2}
+[skinyi@fedora ~]$ echo ${var:2}
 cdefghi
-[skinyi@fedora ~]\$ echo ${var:0-5}     # 从右数第五个开始输出
+[skinyi@fedora ~]$ echo ${var:0-5}     # 从右数第五个开始输出
 efghi
-[skinyi@fedora ~]\$ echo ${var:2:4}
+[skinyi@fedora ~]$ echo ${var:2:4}
 cdef
-[skinyi@fedora ~]\$ echo ${var:0-4:2}   # 从右数第四个开始输出两个字符
+[skinyi@fedora ~]$ echo ${var:0-4:2}   # 从右数第四个开始输出两个字符
 fg
-[skinyi@fedora ~]\$ echo ${var#a*d}
+[skinyi@fedora ~]$ echo ${var#a*d}
 efghi
-[skinyi@fedora ~]\$ echo ${var%e*i}
+[skinyi@fedora ~]$ echo ${var%e*i}
 abcd
-[skinyi@fedora ~]\$ echo ${var/cde/edc}
+[skinyi@fedora ~]$ echo ${var/cde/edc}
 abedcfghi
 ```
 
