@@ -363,11 +363,28 @@ AWK 是一门实现文本扫描与处理的编程语言，常用来实现文本�
 
 ```bash
 # 用法格式
-awk - pattern scanning and processing language
-awk [ options ] -f program-file [ -- ] file ...
-awk [ options ] [ -- ] program-text file ...
+awk - 模式扫描处理工具
+awk [ options ] -f program-file [ - ] file ...
+awk [ options ] [ - ] program-text file ...
 ## awk 程序中的 BEGIN{}、END{} 分别控制读取文件之前和读取文件结束的过程。
 # 常见选项
 -v var=new_var              # 修改 awk 内置变量的取值，如：-v OFS=:（打印字段时以冒号分隔）
 -F fs, --field-separator fs # 指定 fs 作为每列的分隔符，相当于 -v FS=fs。
+```
+
+### 用法示例
+
+```bash
+# 打印 1 到 3 行的内容
+[skinyi@fedora ~]$ awk 'NR==1,NR==3 {print}' lyrics.txt 
+My whole world changed from the moment I met you
+And it would never be the same
+Felt like I knew that I always loved you
+# 打印 2 和 6 行的内容
+[skinyi@fedora ~]$ awk 'NR==2 || NR==6 {print}' lyrics.txt 
+And it would never be the same
+Everything was perfect, I knew this love was worth it
+# 打印以 Everything 开头的行
+[skinyi@fedora ~]$ awk '/^Everything/{print}' lyrics.txt 
+Everything was perfect, I knew this love was worth it
 ```
