@@ -1,5 +1,5 @@
 ---
-title: RHCSA8 考前练习题及答案（下）
+title: RHCE8 考前练习题及答案（下）
 lang: zh-CN
 tags: 
   - Linux

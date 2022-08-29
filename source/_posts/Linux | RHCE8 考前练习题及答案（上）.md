@@ -1,5 +1,5 @@
 ---
-title: RHCSA8 考前练习题及答案（上）
+title: RHCE8 考前练习题及答案（上）
 lang: zh-CN
 tags: 
   - Linux
@@ -289,7 +289,6 @@ roles_path = /home/greg/ansible/roles:/usr/share/ansible/roles
 > 参数意义：
 > 
 > -r ROLE_FILE, --role-file=ROLE_FILE    指定从文件中导入角色
-> 
 > -p ROLES_PATH, --roles-path=ROLES_PATH    指定安装角色的位置，默认为 ansible.cfg 中配置的
 
 3. 验证：
