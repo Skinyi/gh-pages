@@ -329,7 +329,6 @@ Welcome to HOSTNAME on IPADDRESS
 
 * defaults: 角色的默认变量；
 * files: 包含可以经由此角色部署的文件；
-* xxxxxxxxxx # 见 ServerA 配置 yum/dnf 仓库部分 或：[root@node2 ~]\# scp root@server1:/etc/yum.repos.d/Default.repo /etc/yum.repos.d/bash
 * meta: 角色定义的一些元数据；
 * tasks: 包含角色要执行的主要任务的列表；
 * templates: 包含可以经由此角色部署的模板；
@@ -338,7 +337,7 @@ Welcome to HOSTNAME on IPADDRESS
 
 本题我们主要用到 tasks 和 templates 两个目录中的内容，其中 tasks 用来存放该角色所要执行的一些任务，templates 用来存放题目中涉及的模板文件。
 
-2. 编辑角色的 playbook 及创建模板文件
+1. 编辑角色的 playbook 及创建模板文件
 
 编辑 tasks/main.yml 文件：
 
@@ -486,6 +485,7 @@ Welcome to {{ ansible_hostname }} on {{ ansible_default_ipv4.address }}
   hosts: webservers
   roles:
     - phpinfo
+    - apache
 ```
 
 2. 执行剧本并验证：
