@@ -95,7 +95,7 @@ Development
 
 ```yml
 ---
-- name: 
+- name: Deploy Web Service and Publish Web Content
   hosts: dev
   tasks:
     - name: Start Firewalld Daemon Service
@@ -267,7 +267,17 @@ DISK_SIZE_VDB=disk_vdb_size
 [greg@control ~]$ echo "pw_developer: Imadev\npwmanager: Imamgr\n" > /home/greg/ansible/locker.yml
 ```
 
-3. 加密该 Ansible 库文件并验证
+3. （可选）将密码文件的路径写入配置文件
+
+```bash
+[greg@control ~]$ vim /home/greg/ansible/ansible.cfg
+```
+
+```ini
+vault_password_file = /home/greg/ansible/secret.txt
+```
+
+4. 加密该 Ansible 库文件并验证
 
 ```bash
 [greg@control ansible]$ ansible-vault encrypt --vault-id=/home/greg/ansible/secret.txt /home/greg/ansible/locker.yml
@@ -338,6 +348,7 @@ users:
         name: "{{ item.name }}"
         password: "{{ pw_developer | password_hash('sha512') }}"
         groups: devops
+        append: yes     # 追加附加组到现有的附加组设置
         state: present
       loop: "{{ users }}"
       when: item.job == 'developer'
@@ -357,6 +368,7 @@ users:
         name: "{{ item.name }}"
         password: "{{ pw_manager | password_hash('sha512') }}"
         groups: opsmgr
+        append: yes     # 追加附加组到现有的附加组设置
         state: present
       loop: "{{ users }}"
       when: item.job == 'manager'

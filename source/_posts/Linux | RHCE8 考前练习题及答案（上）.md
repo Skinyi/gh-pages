@@ -536,34 +536,31 @@ Volume group done not exist
   tasks:
     - name: Create and Use LV on ALL
       block:    # 任务块，这里面的任务执行不成功就会执行 rescue 块里的
-        - name: Execute General Steps        
+        - name: Execute General Steps - 1500m     
           lvol: 
             vg: research
             lv: data
             size: 1500m
-
       rescue:    # 救援块，block 块里步骤失败的补救措施
         - name: Execute Rescue Steps - Show Error Message
           debug:
             msg: Could not create logical volume of that size
-
-        - name: Execute Rescue Steps - Plan B
+        - name: Execute Rescue Steps - 800m
           lvol:
             vg: research
             lv: data
             size: 800m
-
       always:    # 无论 block 失败与否都会执行的
         - name: Formating LV to Ext4
           filesystem:
             dev: /dev/research/data
             fstype: ext4
-      when: " 'research' in ansible_lvm.vgs"    # 判断：当有 research vg 才执行上述任务
+      when: "'research' in ansible_lvm.vgs"    # 判断：当有 research vg 才执行上述任务
 
     - name: Show Error Message
       debug:
         msg: Volume group done not exist
-      when: " 'research' not in ansible_lvm.vgs "
+      when: "'research' not in ansible_lvm.vgs "
 ```
 
 2. 执行剧本并验证：
