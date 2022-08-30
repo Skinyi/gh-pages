@@ -118,8 +118,8 @@ git 全局配置，如果需要通过 git 将博客部署到 Github Pages 上，
 ```bash
 [skinyi@localhost ~]$ hexo init blog
 [skinyi@localhost ~]$ cd blog
-[skinyi@localhost ~]$ npm install
-[skinyi@localhost ~]$ hexo server
+[skinyi@localhost blog]$ npm install
+[skinyi@localhost blog]$ hexo server
 ```
 
 可以通过浏览器访问本地地址：http://127.0.0.1:4000 来预览生成的博客网站，若要在外部访问的话需要通过防火墙开放 4000 端口，在此不再赘述。

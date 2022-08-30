@@ -91,7 +91,7 @@ become_ask_pass=False
 测试结果：
 
 ```bash
-[greg@control ~]$ ansible all -m ping    # 不指定模块时默认使用 command 模块
+[greg@control ansible]$ ansible all -m ping    # 不指定模块时默认使用 command 模块
 ```
 
 ### 创建和运行 Ansible 临时命令
@@ -185,13 +185,13 @@ ansible all -m yum_repository -a "name=EX294_STREAM description='EX294 stream so
 3. 执行 playbook，一般只要结果不是红色就没问题：
 
 ```bash
-[greg@control ~]$ ansible-playbook /home/greg/ansible/packages.yml
+[greg@control ansible]$ ansible-playbook /home/greg/ansible/packages.yml
 ```
 
 4. 验证，若能查到已安装 php 则说明剧本执行的没问题：
 
 ```bash
-[greg@control ~]$ ansible dev -a "rpm -q php"
+[greg@control ansible]$ ansible dev -a "rpm -q php"
 ```
 
 ### 使用 RHEL 系统角色
@@ -223,7 +223,7 @@ roles_path = /home/greg/ansible/roles:/usr/share/ansible/roles
 > 查看本地角色列表：
 
 ```bash
-[greg@control ~]$ ansible-galaxy list
+[greg@control ansible]$ ansible-galaxy list
 ```
 
 2. 创建 playbook，并参考文档`/usr/share/ansible/roles/rhel-system-roles.timesync/README.md`中的例子，编辑该 playbook：
@@ -246,14 +246,14 @@ roles_path = /home/greg/ansible/roles:/usr/share/ansible/roles
 3. 执行 playbook，此过程可能会有一些红颜色的报错，但是只要后面的验证没问题就可以：
 
 ```bash
-[greg@control ~]$ ansible-playbook /home/greg/ansible/timesync.yml
+[greg@control ansible]$ ansible-playbook /home/greg/ansible/timesync.yml
 ```
 
 4. 验证：
 
 ```bash
-[greg@control ~]$ ansible all -a "chronyc sources"
-[greg@control ~]$ ansible all -a "timedatectl"
+[greg@control ansible]$ ansible all -a "chronyc sources"
+[greg@control ansible]$ ansible all -a "timedatectl"
 ```
 
 ### 使用 Ansible Galaxy 安装角色
@@ -283,7 +283,7 @@ roles_path = /home/greg/ansible/roles:/usr/share/ansible/roles
 2. 使用角色文件安装角色：
 
 ```bash
-[greg@control ~]$ ansible-galaxy install -r /home/greg/ansible/roles/requirements.yml -p /home/greg/ansible/roles
+[greg@control ansible]$ ansible-galaxy install -r /home/greg/ansible/roles/requirements.yml -p /home/greg/ansible/roles
 ```
 
 > 参数意义：
@@ -294,7 +294,7 @@ roles_path = /home/greg/ansible/roles:/usr/share/ansible/roles
 3. 验证：
 
 ```bash
-[greg@control ~]$ ansible-galaxy list
+[greg@control ansible]$ ansible-galaxy list
 ```
 
 ### 创建和使用角色
@@ -410,9 +410,9 @@ Welcome to {{ ansible_hostname }} on {{ ansible_default_ipv4.address }}
 4. 执行 playbook 并验证：
 
 ```bash
-[greg@control roles]$ ansible-playbook /home/greg/ansible/newrole.yml
-[greg@control roles]$ curl http://node3    # 验证 node3
-[greg@control roles]$ curl http://node4    # 验证 node4
+[greg@control ansible]$ ansible-playbook /home/greg/ansible/newrole.yml
+[greg@control ansible]$ curl http://node3    # 验证 node3
+[greg@control ansible]$ curl http://node4    # 验证 node4
 ```
 
 ### 从 Ansible Galaxy 使用角色
@@ -485,10 +485,10 @@ Welcome to {{ ansible_hostname }} on {{ ansible_default_ipv4.address }}
 2. 执行剧本并验证：
 
 ```bash
-[greg@control ~]$ ansible-playbook /home/greg/ansible/roles.yml
-[greg@control ~]$ curl http://node5    # 会看到负责均衡轮番从 node3 和 node4 获得 web 页面
-[greg@control ~]$ curl http://node3/hello.php
-[greg@control ~]$ curl http://node4/hello.php
+[greg@control ansible]$ ansible-playbook /home/greg/ansible/roles.yml
+[greg@control ansible]$ curl http://node5    # 会看到负责均衡轮番从 node3 和 node4 获得 web 页面
+[greg@control ansible]$ curl http://node3/hello.php
+[greg@control ansible]$ curl http://node4/hello.php
 ```
 
 ### 创建和使用逻辑卷
@@ -563,8 +563,8 @@ Volume group done not exist
 2. 执行剧本并验证：
 
 ```bash
-[greg@control ~]$ ansible-playbook /home/greg/ansible/lv.yml
-[greg@control ~]$ ansible all -a "lvs"    # 验证
+[greg@control ansible]$ ansible-playbook /home/greg/ansible/lv.yml
+[greg@control ansible]$ ansible all -a "lvs"    # 验证
 ```
 
 ### 生成 hosts 文件
@@ -624,6 +624,6 @@ IP_ADDRESS FQDN HOSTNAME
 4. 执行剧本并验证：
 
 ```bash
-[greg@control ~]$ ansible-playbook /home/greg/ansible/hosts.yml
-[greg@control ~]$ ansible dev -a "cat /etc/myhosts"    # 验证
+[greg@control ansible]$ ansible-playbook /home/greg/ansible/hosts.yml
+[greg@control ansible]$ ansible dev -a "cat /etc/myhosts"    # 验证
 ```

@@ -60,8 +60,8 @@ categories:
 2. 执行剧本并验证：
 
 ```bash
-[greg@control ~]$ ansible-playbook /home/greg/ansible/issue.yml
-[greg@control ~]$ ansible dev,test,prod -a "cat /etc/issue"    # 验证
+[greg@control ansible]$ ansible-playbook /home/greg/ansible/issue.yml
+[greg@control ansible]$ ansible dev,test,prod -a "cat /etc/issue"    # 验证
 ```
 
 ### 创建 web 内容目录
@@ -138,8 +138,8 @@ Development
 2. 执行剧本并验证：
 
 ```bash
-[greg@control ~]$ ansible-playbook /home/greg/ansible/webcontent.yml
-[greg@control ~]$ curl http://node1/    # 验证
+[greg@control ansible]$ ansible-playbook /home/greg/ansible/webcontent.yml
+[greg@control ansible]$ curl http://node1/    # 验证
 ```
 
 ### 生成硬件报告
@@ -237,8 +237,8 @@ DISK_SIZE_VDB=disk_vdb_size
 3. 执行 playbook 并验证：
 
 ```bash
-[greg@control ~]$ ansible-playbook /home/greg/ansible/hwreport.yml
-[greg@control ~]$ ansible all -a "cat /root/hwreport.txt"
+[greg@control ansible]$ ansible-playbook /home/greg/ansible/hwreport.yml
+[greg@control ansible]$ ansible all -a "cat /root/hwreport.txt"
 ```
 
 ### 创建密码库
@@ -275,8 +275,8 @@ DISK_SIZE_VDB=disk_vdb_size
 3. 加密该 Ansible 库文件并验证
 
 ```bash
-[greg@control ~]$ ansible-vault encrypt --vault-id=/home/greg/ansible/secret.txt
-[greg@control ~]$ ansible-vault view /home/greg/ansible/locker.yml    # 解密验证
+[greg@control ansible]$ ansible-vault encrypt --vault-id=/home/greg/ansible/secret.txt
+[greg@control ansible]$ ansible-vault view /home/greg/ansible/locker.yml    # 解密验证
 Vault Password: whenyouwishuponastar
 ```
 
@@ -370,8 +370,8 @@ users:
 3. 运行剧本并验证，注意：上面引用了加密的文件因此必须在参数中指定密码文件进行解密才能正常运行
 
 ```bash
-[greg@control ~]$ ansible-playbook --vault-id=/home/greg/ansible/secret.txt /home/greg/ansible/users.yml
-[greg@control ~]$ ansible dev,test,prod -a "tail -2 /etc/passwd"    # 验证
+[greg@control ansible]$ ansible-playbook --vault-id=/home/greg/ansible/secret.txt /home/greg/ansible/users.yml
+[greg@control ansible]$ ansible dev,test,prod -a "tail -2 /etc/passwd"    # 验证
 ```
 
 ### 更新 Ansible 库的密钥
@@ -389,19 +389,19 @@ users:
 
 ```bash
 [greg@control ~]$ wget http://materials/salaries.yml -p /home/greg/ansible
-[greg@control ~]$ ansible-vault view /home/greg/ansible/salaries.yml
+[greg@control ansible]$ ansible-vault view /home/greg/ansible/salaries.yml
 Vault Password: insecure8sure
 haha    # 能看到解密后的内容
 ```
 
-    2. 重新加密文件并使用新密码进行解密查看
+2. 重新加密文件并使用新密码进行解密查看
 
 ```bash
-[greg@control ~]$ ansible-vault rekey /home/greg/ansible/salaries.yml
+[greg@control ansible]$ ansible-vault rekey /home/greg/ansible/salaries.yml
 Vault Password: insecure8sure
 New Vault Password: bbs2you9527
 Confirm New Vault Password: bbs2you9527
-[greg@control ~]$ ansible-vault view /home/greg/ansible/salaries.yml
+[greg@control ansible]$ ansible-vault view /home/greg/ansible/salaries.yml
 Vault Password: bbs2you9527
 haha    # 用新密码能看到解密后的内容
 ```
@@ -431,7 +431,7 @@ roles_path = /home/greg/ansible/roles:/usr/share/ansible/roles
 > 查看本地角色列表：
 
 ```bash
-[greg@control ~]$ ansible-galaxy list
+[greg@control ansible]$ ansible-galaxy list
 ```
 
 2. 编写剧本
@@ -469,8 +469,8 @@ roles_path = /home/greg/ansible/roles:/usr/share/ansible/roles
 3. 执行剧本并验证
 
 ```bash
-[greg@control ~]$ ansible-playbook /home/greg/ansible/selinux.yml
-[greg@control ~]$ ansible all -a "getenforce"    # 验证
+[greg@control ansible]$ ansible-playbook /home/greg/ansible/selinux.yml
+[greg@control ansible]$ ansible all -a "getenforce"    # 验证
 ```
 
 ### 创建新的磁盘分区
