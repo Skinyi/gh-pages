@@ -98,32 +98,40 @@ Development
 - name: 
   hosts: dev
   tasks:
+    - name: Start Firewalld Daemon Service
+      service:
+        name: firewalld
+        state: started
     - name: Install Apache Packages
       yum: 
         name: httpd
         state: present
     - name: Configure Firewall
-      filewalld: 
+      firewalld: 
         service: http
         state: enabled
         permanent: yes    # 防火墙规则永久生效
         immediate: yes    # 防火墙规则立即生效（可能会失败，若防火墙事先未开启）
+    - name: Create Group webdav
+      group:
+        name: webdav
+        state: present
     - name: Create Webdav Directory
       file:
-        src: /webdav
-        group: webdav
+        path: /webdav
+        group: webdav     # 需创建 webdav 组
         mode: '2775'
         state: directory
         setype: httpd_sys_content_t
     - name: Create Link to Webdav
       file:
         src: /webdav
-        dest: /var/www/html/webdav
+        path: /var/www/html/webdav
         state: link
     - name: Generate index.html
       copy:
         content: "Development"
-        src: /webdav/index.html    # 文件不存在会自动创建
+        dest: /webdav/index.html    # 文件不存在会自动创建
         setype: httpd_sys_content_t
     - name: Enable Auto-start Services
       service: 
@@ -139,7 +147,7 @@ Development
 
 ```bash
 [greg@control ansible]$ ansible-playbook /home/greg/ansible/webcontent.yml
-[greg@control ansible]$ curl http://node1/    # 验证
+[greg@control ansible]$ curl http://node1/webdav/index.html    # 验证
 ```
 
 ### 生成硬件报告
@@ -166,7 +174,8 @@ Development
 1. 下载 hwreport.empty 了解其内容：
 
 ```bash
-[greg@control ~]$ wget http://materails/hwreport.empty | cat
+[greg@control ~]$ wget http://materials/hwreport.empty -P /home/greg/ansible
+[greg@control ~]$ cat hwreport.empty
 ```
 
 ```ini
@@ -202,36 +211,22 @@ DISK_SIZE_VDB=disk_vdb_size
       replace:
         path: /root/hwreport.txt
         regexp: "memory_in_MB"
-        replace: "{{ ansible_memory_mb }}"
+        replace: "{{ ansible_memtotal_mb|string }}"     # 解决警告，使用过滤器进行 int 转 string
     - name: Replace Content Of BIOS Field
       replace:
         path: /root/hwreport.txt
         regexp: "BIOS_version"
         replace: "{{ ansible_bios_version }}"
-    - name: Replace Content Of DISK_SIZE_VDA Field When VDA Exists
+    - name: Replace Content Of DISK_SIZE_VDA Field
       replace:
         path: /root/hwreport.txt
         regexp: "disk_vda_size"
-        replace: "{{ ansible_devices.vda.size }}"
-      when: "'vda' in ansible_devices"
-    - name: Output NONE When VDA not Exists
-      replace:
-        path: /root/hwreport.txt
-        regexp: "disk_vda_size"
-        replace: "NONE"
-      when: "'vda' not in ansible_devices"
-    - name: Replace Content Of DISK_SIZE_VDB Field When VDB Exists
+        replace: "{{ ansible_devices.vda.size | default('NONE') }}"     # 使用过滤器，未定义时使用默认值
+    - name: Replace Content Of DISK_SIZE_VDB Field
       replace:
         path: /root/hwreport.txt
         regexp: "disk_vdb_size"
-        replace: "{{ ansible_devices.vdb.size }}"
-      when: "'vdb' in ansible_devices"
-    - name: Output NONE When VDB not Exists
-      replace:
-        path: /root/hwreport.txt
-        regexp: "disk_vdb_size"
-        replace: "NONE"
-      when: "'vdb' not in ansible_devices"
+        replace: "{{ ansible_devices.vdb.size | default('NONE') }}"
 ```
 
 3. 执行 playbook 并验证：
@@ -275,7 +270,7 @@ DISK_SIZE_VDB=disk_vdb_size
 3. 加密该 Ansible 库文件并验证
 
 ```bash
-[greg@control ansible]$ ansible-vault encrypt --vault-id=/home/greg/ansible/secret.txt
+[greg@control ansible]$ ansible-vault encrypt --vault-id=/home/greg/ansible/secret.txt /home/greg/ansible/locker.yml
 [greg@control ansible]$ ansible-vault view /home/greg/ansible/locker.yml    # 解密验证
 Vault Password: whenyouwishuponastar
 ```
@@ -307,7 +302,7 @@ Vault Password: whenyouwishuponastar
 1. 下载用户列表文件并分析
 
 ```bash
-[greg@control ~]$ wget http://materials/user_list.yml -p /home/greg/ansible && cat /home/greg/ansible/user_list.yml
+[greg@control ~]$ wget http://materials/user_list.yml -P /home/greg/ansible && cat /home/greg/ansible/user_list.yml
 ```
 
 ```yml
@@ -331,7 +326,7 @@ users:
 - name: Create User on dev,test
   hosts: dev,test
   vars_files: 
-    - /home/greg/ansible/users.yml
+    - /home/greg/ansible/user_list.yml
     - /home/greg/ansible/locker.yml
   tasks:
     - name: Create Group devops
@@ -349,8 +344,8 @@ users:
 
 - name: Create User on prod
   hosts: prod
-    vars_files: 
-    - /home/greg/ansible/users.yml
+  vars_files: 
+    - /home/greg/ansible/user_list.yml
     - /home/greg/ansible/locker.yml
   tasks:
     - name: Create Group opsmgr
@@ -370,7 +365,7 @@ users:
 3. 运行剧本并验证，注意：上面引用了加密的文件因此必须在参数中指定密码文件进行解密才能正常运行
 
 ```bash
-[greg@control ansible]$ ansible-playbook --vault-id=/home/greg/ansible/secret.txt /home/greg/ansible/users.yml
+[greg@control ansible]$ ansible-playbook --vault-password-file=/home/greg/ansible/secret.txt /home/greg/ansible/users.yml
 [greg@control ansible]$ ansible dev,test,prod -a "tail -2 /etc/passwd"    # 验证
 ```
 
@@ -388,7 +383,7 @@ users:
 1. 下载所需文件并使用当前库密码进行解密查看
 
 ```bash
-[greg@control ~]$ wget http://materials/salaries.yml -p /home/greg/ansible
+[greg@control ~]$ wget http://materials/salaries.yml -P /home/greg/ansible
 [greg@control ansible]$ ansible-vault view /home/greg/ansible/salaries.yml
 Vault Password: insecure8sure
 haha    # 能看到解密后的内容

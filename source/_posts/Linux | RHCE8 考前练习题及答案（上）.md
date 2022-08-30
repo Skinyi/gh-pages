@@ -51,7 +51,7 @@ node2
 
 [prod]
 node3
-mode4
+node4
 
 [balancers]
 node5
@@ -178,7 +178,7 @@ ansible all -m yum_repository -a "name=EX294_STREAM description='EX294 stream so
   tasks:
     - name: Check Updates
       yum:
-        name: *
+        name: "*"    # 注意引号，不然会报错
         state: latest
 ```
 
@@ -348,6 +348,12 @@ Welcome to HOSTNAME on IPADDRESS
 
 ```yml
 ---
+# 0. 开启防火墙 - 注意看开始的说明：防火墙默认关闭，否则第二步会失败
+- name: Start Firewalld Service
+  service:
+    name: firewalld
+    state: started
+
 # 1. 安装 httpd 包
 - name: Install Apache Packages
   yum: 
@@ -356,7 +362,7 @@ Welcome to HOSTNAME on IPADDRESS
 
 # 2. 配置防火墙
 - name: Configure Firewall
-  filewalld: 
+  firewalld: 
     service: http
     state: enabled
     permanent: yes    # 防火墙规则永久生效
@@ -369,7 +375,7 @@ Welcome to HOSTNAME on IPADDRESS
     dest: /var/www/html/index.html
     owner: apache
     group: apache
-    mod: '0644'
+    mode: '0644'
     setype: httpd_sys_content_t
 
 # 4. 配置服务自启
@@ -530,11 +536,12 @@ Volume group done not exist
   tasks:
     - name: Create and Use LV on ALL
       block:    # 任务块，这里面的任务执行不成功就会执行 rescue 块里的
-        - name: Execute General Steps 
+        - name: Execute General Steps        
           lvol: 
             vg: research
             lv: data
             size: 1500m
+          ignore_errors: yes  # 忽略错误去执行 rescue 块的
 
       rescue:    # 救援块，block 块里步骤失败的补救措施
         - name: Execute Rescue Steps - Show Error Message
@@ -597,7 +604,7 @@ IP_ADDRESS FQDN HOSTNAME
 
 ```jinja2
 {% for host in groups.all %}
-{{ hostvars['host'].ansible_default_ipv4.address }} {{ hostvars['host'].ansible_fqdn }} {{ hostvars['host'].ansible_hostname }}
+{{ hostvars[host].ansible_default_ipv4.address }} {{ hostvars[host].ansible_fqdn }} {{ hostvars[host].ansible_hostname }}
 {% endfor %}
 ```
 
