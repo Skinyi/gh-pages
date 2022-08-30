@@ -395,13 +395,13 @@ Welcome to HOSTNAME on IPADDRESS
 ```
 
 ```jinja2
-Welcome to {{ ansible_hostname }} on {{ ansible_default_ipv4.address }}
+Welcome to {{ ansible_fqdn }} on {{ ansible_default_ipv4.address }}
 ```
 
 3. 创建 playbook 使用 apache 角色：
 
 ```bash
-[greg@control roles]$ vim /home/greg/ansible/roles.yml
+[greg@control roles]$ vim /home/greg/ansible/apache.yml
 ```
 
 ```yml
@@ -415,7 +415,7 @@ Welcome to {{ ansible_hostname }} on {{ ansible_default_ipv4.address }}
 4. 执行 playbook 并验证：
 
 ```bash
-[greg@control ansible]$ ansible-playbook /home/greg/ansible/newrole.yml
+[greg@control ansible]$ ansible-playbook /home/greg/ansible/apache.yml
 [greg@control ansible]$ curl http://node3    # 验证 node3
 [greg@control ansible]$ curl http://node4    # 验证 node4
 ```
