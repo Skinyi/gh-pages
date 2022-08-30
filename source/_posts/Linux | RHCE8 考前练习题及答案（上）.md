@@ -311,7 +311,7 @@ Welcome to HOSTNAME on IPADDRESS
 
 其中，`HOSTNAME` 是受管节点的完全限定域名，`IPADDRESS` 则是受管节点的 `IP` 地址。
 
-创建一个使用此角色的 playbook `/home/greg/ansible/newrole.yml`，该 playbook 在 `webservers` 主机组中的主机上运行。
+创建一个使用此角色的 playbook `/home/greg/ansible/roles.yml`，该 playbook 在 `webservers` 主机组中的主机上运行。
 
 💯 **答案**：
 
@@ -402,7 +402,7 @@ Welcome to {{ ansible_hostname }} on {{ ansible_default_ipv4.address }}
 3. 创建 playbook 使用 apache 角色：
 
 ```bash
-[greg@control roles]$ vim /home/greg/ansible/newrole.yml
+[greg@control roles]$ vim /home/greg/ansible/roles.yml
 ```
 
 ```yml
@@ -541,7 +541,6 @@ Volume group done not exist
             vg: research
             lv: data
             size: 1500m
-          ignore_errors: yes  # 忽略错误去执行 rescue 块的
 
       rescue:    # 救援块，block 块里步骤失败的补救措施
         - name: Execute Rescue Steps - Show Error Message
