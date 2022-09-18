@@ -427,7 +427,7 @@ haha    # 用新密码能看到解密后的内容
 [greg@control ~]$ sudo yum install rhel-system-roles -y
 ```
 
-> 安装的 Ansible 角色一般会放在 `/usr/share/ansible/roles/` 目录下。在本题，我们需要用到的是 `rhel-system-roles.timesync` 这个角色。
+> 安装的 Ansible 角色一般会放在 `/usr/share/ansible/roles/` 目录下。在本题，我们需要用到的是 `rhel-system-roles.selinux` 这个角色。
 > 要使用该角色，还需要在配置文件中引入，编辑配置文件`/home/greg/ansible/ansible.cfg`，修改以下内容：
 
 ```ini
