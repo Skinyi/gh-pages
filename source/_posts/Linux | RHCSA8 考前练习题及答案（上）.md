@@ -106,6 +106,7 @@ total 0
 -rw-r--r--. 1 root root unconfined_u:object_r:var_t:s0 0 Aug  4 22:52 index.html
 
 # 修改涉及的端口及文件的 SELinux 设置
+## 如忘记这条命令可以先启动一下 httpd 服务，然后使用 journalctl -xe 查看日志，日志里有命令
 [root@node1 ~]\# semanage port -a -t http_port_t -p tcp 82
 [root@node1 ~]\# restorecon -RFv /var/www/html
 Relabeled /var/www/html from unconfined_u:object_r:var_t:s0 to system_u:object_r:httpd_sys_content_t:s0
